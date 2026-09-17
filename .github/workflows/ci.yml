@@ -1,0 +1,38 @@
+name: Incident Management CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Spring Boot Application
+    runs-on: ubuntu-latest
+
+    env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Verify Java Version
+        run: java -version
+
+      - name: Build Project
+        run: mvn clean package -DskipTests

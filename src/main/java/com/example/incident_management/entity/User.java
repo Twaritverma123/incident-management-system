@@ -17,6 +17,7 @@ public class User {
     @Indexed(unique = true)
     private String userName;
     private String password;
+    @Indexed(unique = true)
     private String email;
     private List<String> roles= new ArrayList<>();
 

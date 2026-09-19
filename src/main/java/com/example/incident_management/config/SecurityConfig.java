@@ -1,5 +1,7 @@
 package com.example.incident_management.config;
 
+import com.example.incident_management.filter.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,6 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -14,6 +17,8 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
@@ -22,12 +27,15 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/health","/user/register").permitAll()
+                        .requestMatchers("/health","/user/register","/auth/login").permitAll()
                         .requestMatchers("/incidents/*/assign").authenticated()
                         .requestMatchers("/incidents/*/status").authenticated()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(httpBasic -> {});
+//                .httpBasic(httpBasic -> {})
+                .addFilterBefore(
+                                 jwtAuthenticationFilter,
+                                 UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -24,3 +24,6 @@ logging:
 
 server:
   port: ${PORT:8081}
+
+jwt:
+  secret: ${JWT_SECRET}

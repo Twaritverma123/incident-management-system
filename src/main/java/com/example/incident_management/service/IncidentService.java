@@ -1,17 +1,20 @@
 package com.example.incident_management.service;
 
+import com.example.incident_management.config.CacheConfig;
 import com.example.incident_management.entity.Incident;
 import com.example.incident_management.entity.IncidentStatus;
 import com.example.incident_management.entity.User;
 import com.example.incident_management.repository.IncidentRepository;
 import com.example.incident_management.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@Slf4j
 @Service
 public class IncidentService {
 
@@ -58,8 +61,10 @@ public class IncidentService {
 
         return incidentRepository.findAll();
     }
-
+    @Cacheable(cacheNames = "incidents",key = "#id" )
     public Incident getIncidentById(ObjectId id) {
+        log.info("Fetching incident from MongoDB for ID: {}", id);
+
         return incidentRepository.findById(id).orElse(null);
     }
 

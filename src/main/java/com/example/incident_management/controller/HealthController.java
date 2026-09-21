@@ -15,4 +15,5 @@ public class HealthController {
     public String secureTest() {
         return "Authentication successful ";
     }
+
 }

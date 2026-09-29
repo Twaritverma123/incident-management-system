@@ -15,7 +15,7 @@ public class MainController {
                         <h2>Incident Management Application</h2>
                         <a href="https://github.com/Twaritverma123/Journal_application_JWT" target="_blank">
                             View GitHub Repository
-                        </a>
+                         </a>
                     </body>
                 </html>
                 """;

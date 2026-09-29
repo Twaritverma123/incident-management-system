@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Management System</title>
+    <style>
+        *{box-sizing:border-box}
+        body{margin:0;font-family:Inter,Arial,sans-serif;background:#0b1020;color:#e8ecf4;line-height:1.6}
+        .container{width:min(1100px,92%);margin:auto}
+        .hero{padding:70px 0 45px;text-align:center;background:linear-gradient(135deg,#111936,#0b1020)}
+        .badge{display:inline-block;padding:7px 14px;border:1px solid #35446e;border-radius:999px;color:#9fb6ff;font-size:13px}
+        h1{font-size:42px;margin:18px 0 8px}
+        .subtitle{color:#aeb8cc;font-size:18px}
+        .buttons{margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+        .btn{padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:700;border:1px solid #3a4b78;color:#fff}
+        .btn.primary{background:#315efb;border-color:#315efb}
+        section{padding:34px 0}
+        h2{font-size:26px;margin-bottom:18px}
+        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+        .card{background:#121a2f;border:1px solid #253253;border-radius:12px;padding:20px}
+        .card h3{margin-top:0;color:#9fb6ff}
+        .tree{background:#0e1528;border:1px solid #253253;border-radius:12px;padding:24px;overflow:auto}
+        pre{margin:0;color:#d8e0f2;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}
+        .flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px}
+        .flow span{background:#151f38;border:1px solid #314165;padding:12px 15px;border-radius:9px}
+        .arrow{color:#7891d9;font-weight:bold}
+        .lifecycle{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+        .lifecycle span{padding:10px 15px;background:#151f38;border:1px solid #314165;border-radius:8px}
+        table{width:100%;border-collapse:collapse;background:#121a2f;border-radius:10px;overflow:hidden}
+        th,td{text-align:left;padding:12px;border-bottom:1px solid #263451}
+        th{color:#9fb6ff}
+        .footer{text-align:center;color:#7f8ba5;padding:35px 0;border-top:1px solid #202c47}
+        .small{color:#9ba7bd;font-size:14px}
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="container">
+        <span class="badge">Java + Spring Boot • MongoDB • Spring Security • REST APIs</span>
+        <h1>Incident Management System</h1>
+        <p class="subtitle">Role-based backend for creating, assigning, tracking and closing incidents.</p>
+        <div class="buttons">
+            <a class="btn primary" href="https://github.com/Twaritverma123/Journal_application_JWT" target="_blank">View GitHub Repository ↗</a>
+            <a class="btn" href="#architecture">View Architecture</a>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section id="architecture">
+        <h2>Backend Architecture</h2>
+        <div class="flow">
+            <span>Client / Postman / Angular</span><b class="arrow">→</b>
+            <span>Spring Security</span><b class="arrow">→</b>
+            <span>Controller</span><b class="arrow">→</b>
+            <span>Service</span><b class="arrow">→</b>
+            <span>Repository</span><b class="arrow">→</b>
+            <span>MongoDB</span>
+        </div>
+        <p class="small">Authentication and authorization are handled by Spring Security. Controllers expose REST APIs, services contain business rules, repositories communicate with MongoDB, and supporting services provide audit logging and email notifications.</p>
+    </section>
+
+    <section>
+        <h2>Project Structure</h2>
+        <div class="tree"><pre>com.example.incident_management
+│
+├── config
+│   └── SecurityConfig.java
+│
+├── controller
+│   ├── IncidentController.java
+│   ├── UserController.java
+│   └── AuditLogController.java
+│
+├── service
+│   ├── IncidentService.java
+│   ├── UserService.java
+│   ├── AuditLogService.java
+│   └── EmailService.java
+│
+├── repository
+│   ├── IncidentRepository.java
+│   ├── UserRepository.java
+│   └── AuditLogRepository.java
+│
+├── entity
+│   ├── Incident.java
+│   ├── User.java
+│   ├── AuditLog.java
+│   └── IncidentStatus.java
+│
+└── IncidentManagementApplication.java</pre></div>
+    </section>
+
+    <section>
+        <h2>Layer Responsibilities</h2>
+        <div class="grid">
+            <div class="card"><h3>Spring Security</h3><p>Authentication, BCrypt password verification and role-based authorization.</p></div>
+            <div class="card"><h3>Controller</h3><p>Receives REST requests, passes data to services and returns HTTP responses.</p></div>
+            <div class="card"><h3>Service</h3><p>Business logic, validations, incident workflow, audit creation and email notification.</p></div>
+            <div class="card"><h3>Repository</h3><p>Communicates with MongoDB for persistence and retrieval.</p></div>
+            <div class="card"><h3>Entity</h3><p>Represents User, Incident, AuditLog and IncidentStatus data.</p></div>
+            <div class="card"><h3>MongoDB</h3><p>Stores users, incidents and audit logs.</p></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Roles</h2>
+        <div class="grid">
+            <div class="card"><h3>DEVELOPER</h3><p>Works on assigned incidents and can update their status.</p></div>
+            <div class="card"><h3>LEAD</h3><p>Manages incidents, assigns incidents to developers and updates status.</p></div>
+            <div class="card"><h3>SCRUM_MASTER</h3><p>Manages incidents, assigns incidents to developers and updates status.</p></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Incident Lifecycle</h2>
+        <div class="lifecycle">
+            <span>OPEN</span><b class="arrow">→</b><span>ASSIGNED</span><b class="arrow">→</b><span>IN_PROGRESS</span><b class="arrow">→</b><span>RESOLVED</span><b class="arrow">→</b><span>CLOSED</span>
+        </div>
+        <p class="small">IncidentService validates status transitions and prevents invalid transitions such as OPEN directly to CLOSED.</p>
+    </section>
+
+    <section>
+        <h2>REST API Design</h2>
+        <table>
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr></thead>
+            <tbody>
+            <tr><td>POST</td><td>/user/register</td><td>Register a user</td></tr>
+            <tr><td>POST</td><td>/incidents</td><td>Create an incident</td></tr>
+            <tr><td>GET</td><td>/incidents</td><td>Get all incidents</td></tr>
+            <tr><td>GET</td><td>/incidents/{id}</td><td>Get a single incident</td></tr>
+            <tr><td>PUT</td><td>/incidents/{id}/assign?developer=...</td><td>Assign an incident</td></tr>
+            <tr><td>PUT</td><td>/incidents/{id}/status?status=...</td><td>Update incident status</td></tr>
+            <tr><td>GET</td><td>/incidents/{id}/history</td><td>Get incident audit history</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Data Model</h2>
+        <div class="grid">
+            <div class="card"><h3>User</h3><p>id, userName, password, email, roles</p></div>
+            <div class="card"><h3>Incident</h3><p>id, incidentNumber, title, description, priority, status, reportedBy, assignedTo, createdAt, updatedAt</p></div>
+            <div class="card"><h3>AuditLog</h3><p>id, incidentId, incidentNumber, action, performedBy, description, timestamp</p></div>
+        </div>
+        <p class="small">MongoDB database: incident_management • Collections: users, incidents, audit_logs</p>
+    </section>
+
+    <section>
+        <h2>Security Architecture</h2>
+        <div class="flow">
+            <span>HTTP Request</span><b class="arrow">→</b>
+            <span>Spring Security Filter</span><b class="arrow">→</b>
+            <span>Authentication</span><b class="arrow">→</b>
+            <span>Authorization</span><b class="arrow">→</b>
+            <span>Controller</span>
+        </div>
+        <p class="small">Authentication answers “Who are you?” Authorization answers “What are you allowed to do?”</p>
+    </section>
+
+    <section>
+        <h2>Technology Stack</h2>
+        <div class="grid">
+            <div class="card"><h3>Java</h3><p>Backend programming language</p></div>
+            <div class="card"><h3>Spring Boot</h3><p>Application framework</p></div>
+            <div class="card"><h3>Spring Security</h3><p>Authentication and authorization</p></div>
+            <div class="card"><h3>Spring Data MongoDB</h3><p>Database access</p></div>
+            <div class="card"><h3>MongoDB</h3><p>NoSQL database</p></div>
+            <div class="card"><h3>Postman</h3><p>API testing</p></div>
+            <div class="card"><h3>Maven</h3><p>Build and dependency management</p></div>
+            <div class="card"><h3>BCrypt</h3><p>Password hashing</p></div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p><strong>Incident Management System</strong></p>
+        <p>Spring Boot REST Backend • MongoDB • Spring Security</p>
+        <a class="btn primary" href="https://github.com/Twaritverma123/Journal_application_JWT" target="_blank">GitHub Repository ↗</a>
+    </div>
+</footer>
+
+</body>
+</html>
